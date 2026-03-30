@@ -1,0 +1,89 @@
+import React, { useState, useEffect, useRef } from "react";
+import { db } from "../../firebase"; 
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { ArrowRight, ChevronLeft, ChevronRight, Loader2, Leaf } from "lucide-react";
+import ProductCard from "../common/ProductCard";
+import { useNavigate, Link } from "react-router-dom";
+
+const FeaturedProducts = () => {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const scrollRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const q = query(collection(db, "products"), where("section", "==", "featured"));
+        const querySnapshot = await getDocs(q);
+        const productsList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setFeaturedProducts(productsList);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
+    }
+  };
+
+  if (loading) return (
+    <div className="bg-[#050805] py-20 flex justify-center border-t border-white/5">
+      <Loader2 className="text-green-600 animate-spin" size={40} />
+    </div>
+  );
+
+  if (featuredProducts.length === 0) return null;
+
+  return (
+    <section className="bg-[#050805] py-16 md:py-24 px-4 md:px-6 overflow-hidden font-sans">
+      <div className="max-w-7xl mx-auto">
+        
+        <div className="flex justify-between items-end mb-10 md:mb-16">
+          <div className="space-y-2">
+            <span className="text-green-600 font-black tracking-[0.3em] text-[8px] md:text-[10px] uppercase italic">Seasonal Harvest Pick</span>
+            <h2 className="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
+              Daily <span className="text-green-500">Fresh</span>
+            </h2>
+          </div>
+          
+          <div className="hidden md:flex gap-3">
+             <button onClick={() => scroll('left')} className="w-14 h-14 rounded-2xl border border-white/10 flex items-center justify-center text-white hover:bg-green-600 transition-all shadow-2xl"><ChevronLeft size={28} /></button>
+             <button onClick={() => scroll('right')} className="w-14 h-14 rounded-2xl border border-white/10 flex items-center justify-center text-white hover:bg-green-600 transition-all shadow-2xl"><ChevronRight size={28} /></button>
+          </div>
+        </div>
+
+        <div ref={scrollRef} className="flex gap-4 md:gap-8 overflow-x-auto pb-12 scrollbar-hide snap-x snap-mandatory px-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          {featuredProducts.map((product) => (
+            <div key={product.id} className="min-w-[85vw] sm:min-w-[320px] md:min-w-[380px] snap-center">
+              <div onClick={() => navigate(`/products#${product.id}`)} className="cursor-pointer transition-transform active:scale-[0.98]">
+                <ProductCard product={{
+                  id: product.id, name: product.name, price: product.price, category: product.category,
+                  image: product.imageUrl, discount: "FARM PICK", buttonText: "ORDER NOW"
+                }} />
+              </div>
+            </div>
+          ))}
+          
+          <Link to="/products" className="min-w-[70vw] sm:min-w-[320px] snap-center flex items-center justify-center border-2 border-dashed border-white/10 bg-white/5 group hover:bg-green-600/10 transition-all rounded-[3rem]">
+             <div className="text-center p-12">
+                <div className="w-20 h-20 rounded-3xl bg-green-600 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all shadow-3xl shadow-green-600/40">
+                    <ArrowRight className="text-white" size={32} />
+                </div>
+                <p className="text-white font-black uppercase text-xs tracking-[0.3em] italic">Browse All Freshness</p>
+             </div>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FeaturedProducts;
