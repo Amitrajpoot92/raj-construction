@@ -14,8 +14,8 @@ const AddProduct = () => {
     section: "regular",
     stock: "", // Inventory Stock
     unit: "kg",
-    sellingQty: "", // 👈 Pack Size (Quantity per Price)
-    sellingUnit: "gm" // 👈 Pack Unit (Default gm)
+    sellingQty: "", // Pack Size (Quantity per Price)
+    sellingUnit: "gm" // Pack Unit (Default gm)
   });
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
@@ -25,6 +25,7 @@ const AddProduct = () => {
   const [previews, setPreviews] = useState([]);
   const [uploading, setUploading] = useState(false);
 
+  // Orgosaga Specific Cloudinary Config
   const CLOUD_NAME = "ddnzmeqmc"; 
   const UPLOAD_PRESET = "orgosaga";
 
@@ -85,6 +86,7 @@ const AddProduct = () => {
     setUploading(true);
 
     try {
+      // 🚀 PARALLEL UPLOAD LOGIC (From Sports Site)
       const uploadPromises = images.map(async (imgFile) => {
         const data = new FormData();
         data.append("file", imgFile);
@@ -113,8 +115,8 @@ const AddProduct = () => {
         price: Number(formData.price),
         stock: Number(formData.stock) || 0,
         unit: formData.unit,
-        sellingQty: formData.sellingQty, // 👈 Saved to DB
-        sellingUnit: formData.sellingUnit, // 👈 Saved to DB
+        sellingQty: formData.sellingQty, 
+        sellingUnit: formData.sellingUnit, 
         description: formData.description,
         section: formData.section, 
         imageUrls: imageUrls, 
@@ -177,10 +179,8 @@ const AddProduct = () => {
             <input name="name" value={formData.name} onChange={handleChange} type="text" placeholder="PRODUCE NAME (e.g. Pure Honey)" required className="w-full bg-slate-50 p-4 md:p-5 rounded-xl md:rounded-2xl font-bold text-sm outline-none border-2 border-transparent focus:border-green-600/20 transition-all" />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {/* PRICE FIELD */}
               <input name="price" value={formData.price} onChange={handleChange} type="number" placeholder="PRICE (₹)" required className="w-full bg-slate-50 p-4 md:p-5 rounded-xl md:rounded-2xl font-bold text-sm outline-none border-2 border-transparent focus:border-green-600/20 transition-all" />
               
-              {/* ⚖️ PACK SIZE / SELLING QUANTITY (Price per how much?) */}
               <div className="flex bg-slate-50 rounded-xl md:rounded-2xl border-2 border-transparent focus-within:border-green-600/20 overflow-hidden">
                 <div className="flex items-center pl-4 text-slate-400"><Scale size={16}/></div>
                 <input name="sellingQty" value={formData.sellingQty} onChange={handleChange} type="number" placeholder="PACK SIZE (Quantity/Price)" required className="w-full bg-transparent p-4 md:p-5 font-bold text-sm outline-none" />
@@ -194,7 +194,6 @@ const AddProduct = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {/* WAREHOUSE STOCK */}
               <div className="flex bg-slate-50 rounded-xl md:rounded-2xl border-2 border-transparent focus-within:border-green-600/20 overflow-hidden">
                 <div className="flex items-center pl-4 text-slate-400"><Package size={16}/></div>
                 <input name="stock" value={formData.stock} onChange={handleChange} type="number" placeholder="WAREHOUSE STOCK" required className="w-full bg-transparent p-4 md:p-5 font-bold text-sm outline-none" />
@@ -205,7 +204,6 @@ const AddProduct = () => {
                 </select>
               </div>
 
-              {/* CATEGORY SELECT */}
               <div className="relative">
                 {!isAddingNew ? (
                   <select name="category" value={formData.category} onChange={handleChange} required className="w-full bg-slate-50 p-4 md:p-5 rounded-xl md:rounded-2xl font-bold text-sm outline-none border-2 border-transparent focus:border-green-600/20 appearance-none cursor-pointer">

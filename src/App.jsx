@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 
 // --- Magic Scroll Component ---
-import ScrollToTop from "./components/ScrollToTop"; // 🚀 1. ScrollToTop इम्पोर्ट किया
+import ScrollToTop from "./components/ScrollToTop"; 
 
 // --- User Components & Pages ---
 import Navbar from "./components/common/Navbar"; 
@@ -23,6 +23,9 @@ import AddProduct from "./admin/pages/AddProduct";
 import AllProducts from "./admin/pages/AllProducts";
 import Orders from "./admin/pages/Orders";
 import AdminLogin from "./admin/pages/Login";
+// 🚀 Naye Pages Import kiye
+import Customers from "./admin/pages/customers"; 
+import Revenue from "./admin/pages/revenue";
 
 // Protected Route Component (100% Secured for Admin)
 const ProtectedRoute = ({ children }) => {
@@ -33,13 +36,13 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/admin/login" replace />;
   }
 
-  // 2. MAIN SECURITY Check: अगर यूजर लॉगिन है, लेकिन एडमिन नहीं है (सिर्फ कस्टमर है)
+  // 2. MAIN SECURITY Check: अगर यूजर लॉगिन है, लेकिन एडमिन नहीं है
   if (user.role !== "admin") {
     alert("🚨 Access Denied! You are not an Admin.");
     return <Navigate to="/" replace />; 
   }
 
-  // 3. अगर सब ठीक है और वो असली एडमिन है, तब ही एडमिन पैनल (children) देखने दें
+  // 3. अगर वो असली एडमिन है, तब ही एडमिन पैनल देखने दें
   return children;
 };
 
@@ -48,7 +51,6 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-          {/* 🚀 2. Router के अंदर सबसे ऊपर ScrollToTop रखा ताकि हर Route change पर ये काम करे */}
           <ScrollToTop />
           
           <Routes>
@@ -77,7 +79,7 @@ function App() {
             {/* 2. ADMIN LOGIN ROUTE */}
             <Route path="/admin/login" element={<AdminLogin />} />
 
-            {/* 3. PROTECTED ADMIN PANEL ROUTES */}
+            {/* 3. PROTECTED ADMIN PANEL ROUTES (Now Fully Updated) */}
             <Route 
               path="/admin" 
               element={
@@ -86,10 +88,19 @@ function App() {
                 </ProtectedRoute>
               }
             >
+              {/* Dashboard Index */}
               <Route index element={<Dashboard />} />
+              
+              {/* Product Management */}
               <Route path="add-product" element={<AddProduct />} />
               <Route path="all-products" element={<AllProducts />} />
+              
+              {/* Sales & Orders */}
               <Route path="orders" element={<Orders />} />
+              <Route path="revanue" element={<Revenue />} /> {/* 👈 Naya Navigation Set */}
+              
+              {/* User Management */}
+              <Route path="customer" element={<Customers />} /> {/* 👈 Naya Navigation Set */}
             </Route>
 
           </Routes>

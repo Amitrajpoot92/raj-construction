@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { db } from "../firebase";
-import { doc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
 
 const CartContext = createContext();
 
@@ -28,13 +28,13 @@ export const CartProvider = ({ children }) => {
     return () => unsubscribe();
   }, [user]);
 
-  // 🚀 हेल्पर: डेटाबेस में कार्ट अपडेट करना
+  // 🚀 हेल्पर: डेटाबेस में कार्ट अपडेट करना (Firestore Sync)
   const updateDBCart = async (newItems) => {
     if (!user) return;
     try {
       await setDoc(doc(db, "carts", user.uid), { 
         items: newItems,
-        updatedAt: new Date().toISOString()
+        updatedAt: serverTimestamp() // Standard practice for Orgosaga sync
       });
     } catch (err) {
       console.error("Cart Sync Error:", err);
@@ -43,10 +43,11 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = async (product) => {
     if (!user) {
-      alert("Bhai, pehle login to kar lo! 🏏");
+      alert("Bhai, pehle login to kar lo! 🌿");
       return;
     }
     
+    // Check if item exists (including its unit/sellingQty for accuracy)
     const existingItem = cartItems.find((item) => item.id === product.id);
     let updatedItems;
 
@@ -55,11 +56,16 @@ export const CartProvider = ({ children }) => {
         item.id === product.id ? { ...item, qty: item.qty + 1 } : item
       );
     } else {
-      updatedItems = [...cartItems, { ...product, qty: 1 }];
+      // 💡 Adding important organic metadata: sellingQty & sellingUnit
+      updatedItems = [...cartItems, { 
+        ...product, 
+        qty: 1,
+        addedAt: new Date().toISOString() 
+      }];
     }
     
     await updateDBCart(updatedItems);
-    alert("Added to bag! 🎒");
+    alert("Harvest added to bag! 🧺");
   };
 
   const removeFromCart = async (id) => {

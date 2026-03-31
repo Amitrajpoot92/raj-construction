@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
   LayoutGrid, PlusCircle, ShoppingBasket, 
-  Leaf, X, LogOut 
+  Leaf, X, LogOut, IndianRupee, Users 
 } from "lucide-react";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
@@ -10,21 +10,29 @@ import { signOut } from "firebase/auth";
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
 
+  // 🚀 Complete Menu for Orgosaga Elite Management
   const menuItems = [
     { name: "Overview", path: "/admin", icon: <LayoutGrid size={20} /> },
     { name: "Add Produce", path: "/admin/add-product", icon: <PlusCircle size={20} /> },
     { name: "Warehouse", path: "/admin/all-products", icon: <Leaf size={20} /> },
     { name: "Orders", path: "/admin/orders", icon: <ShoppingBasket size={20} /> },
+    { name: "Revenue", path: "/admin/revanue", icon: <IndianRupee size={20} /> },
+    { name: "Members", path: "/admin/customer", icon: <Users size={20} /> },
   ];
 
   const handleLogout = async () => {
-    if (window.confirm("Do you want to exit the management system?")) {
-      await signOut(auth);
+    if (window.confirm("Bhai, do you want to exit the management system?")) {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error("Logout Error:", error);
+      }
     }
   };
 
   return (
     <>
+      {/* 1. Mobile Overlay (Blur effect from Sports site) */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[150] lg:hidden" 
@@ -32,6 +40,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         />
       )}
 
+      {/* 2. Main Sidebar */}
       <aside className={`
         fixed top-0 left-0 h-screen z-[200] bg-slate-950 text-white 
         transition-all duration-300 ease-in-out border-r border-white/5
@@ -42,6 +51,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         flex flex-col overflow-hidden
       `}>
         
+        {/* Logo Section - Organic Themed */}
         <div className="h-20 flex items-center justify-between px-8 border-b border-white/5 shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center shrink-0 shadow-lg shadow-green-600/20">
@@ -53,14 +63,16 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </h2>
           </div>
           
-          <button onClick={toggleSidebar} className="lg:hidden p-2 text-slate-400">
+          <button onClick={toggleSidebar} className="lg:hidden p-2 text-slate-400 hover:text-white transition-colors">
             <X size={24} />
           </button>
         </div>
 
-        <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto overflow-x-hidden">
+        {/* Navigation - With Smart Labels */}
+        <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto overflow-x-hidden custom-scrollbar">
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path;
+            
             return (
               <Link
                 key={item.name}
@@ -70,14 +82,16 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                   flex items-center gap-4 px-4 py-4 rounded-2xl transition-all relative group
                   ${isActive 
                     ? "bg-green-600 text-white shadow-lg shadow-green-600/20" 
-                    : "text-slate-400 hover:bg-white/5"
+                    : "text-slate-400 hover:bg-white/5 hover:text-white"
                   }
                 `}
               >
                 <div className="shrink-0">{item.icon}</div>
+                
+                {/* 🚀 Text Label Logic: Only visible on Mobile-Open or XL Desktop */}
                 <span className={`
                   text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300
-                  ${isOpen ? "opacity-100 visible" : "lg:opacity-0 lg:invisible xl:opacity-100 xl:visible"}
+                  ${isOpen ? "opacity-100 block" : "hidden xl:block"}
                 `}>
                   {item.name}
                 </span>
@@ -86,11 +100,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           })}
         </nav>
 
+        {/* Logout Section */}
         <div className="p-4 border-t border-white/5">
-          <button onClick={handleLogout} className="flex items-center gap-4 px-4 py-4 w-full text-slate-500 hover:text-red-500 transition-colors">
+          <button onClick={handleLogout} className="flex items-center gap-4 px-4 py-4 w-full text-slate-500 hover:text-red-500 transition-colors group">
             <LogOut size={20} className="shrink-0" />
             <span className={`text-[10px] font-black uppercase tracking-widest transition-all
-              ${isOpen ? "opacity-100 visible" : "lg:opacity-0 lg:invisible xl:opacity-100 xl:visible"}`}>
+              ${isOpen ? "opacity-100 block" : "hidden xl:block"}`}>
               Exit System
             </span>
           </button>
