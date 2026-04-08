@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
-  Instagram, Youtube, ArrowUpRight, Globe, 
-  ShieldCheck, Zap, X, ShieldAlert, FileText, Lock, Leaf 
+  Instagram, ArrowUpRight, Globe, 
+  ShieldCheck, X, ShieldAlert, FileText, Lock, Leaf, Mail 
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -32,23 +32,15 @@ const Footer = () => {
               Bringing the purest essence of nature to your home. Based in Bhopal.
             </p>
             
-            {/* 🚀 Social Media */}
+            {/* 🚀 Social Media (Only Instagram) */}
             <div className="flex gap-5">
               <a 
-                href="https://www.instagram.com/gs_sports_mairwa?igsh=aG5pNTBkcnhqY2x5" 
+                href="https://www.instagram.com/?deoia=1" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-slate-900 hover:text-green-600 transition-all hover:-translate-y-1"
               >
                 <Instagram size={20} />
-              </a>
-              <a 
-                href="https://youtube.com/@vikashthakur9046?si=dcKhg5STz4rSfWXd" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-900 hover:text-red-600 transition-all hover:-translate-y-1"
-              >
-                <Youtube size={22} />
               </a>
             </div>
           </div>
@@ -67,23 +59,29 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 3. Support & Admin Access */}
+          {/* 3. Support & Contact (Updated: Simple Links) */}
           <div className="space-y-6">
             <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-green-600">Support</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/admin/login" className="text-sm font-black uppercase italic text-green-600 hover:text-slate-900 transition-all flex items-center gap-2">
-                  <Lock size={12} /> Admin Console
+                <Link to="/admin/login" className="text-sm font-black uppercase italic text-slate-900 hover:text-green-600 transition-all">
+                  Admin Console
                 </Link>
               </li>
               <li>
-                <button onClick={() => setModalType('privacy')} className="text-sm font-black uppercase italic text-slate-900 hover:text-green-600 transition-all text-left">Privacy Policy</button>
+                <button onClick={() => setModalType('privacy')} className="text-sm font-black uppercase italic text-slate-900 hover:text-green-600 transition-all text-left">
+                  Privacy Policy
+                </button>
               </li>
               <li>
-                <button onClick={() => setModalType('terms')} className="text-sm font-black uppercase italic text-slate-900 hover:text-green-600 transition-all text-left">Terms & Conditions</button>
+                <button onClick={() => setModalType('terms')} className="text-sm font-black uppercase italic text-slate-900 hover:text-green-600 transition-all text-left">
+                  Terms & Conditions
+                </button>
               </li>
               <li>
-                <Link to="/about" className="text-sm font-black uppercase italic text-slate-900 hover:text-green-600 transition-all">Contact Us</Link>
+                <Link to="/about" className="text-sm font-black uppercase italic text-slate-900 hover:text-green-600 transition-all">
+                  Contact Us
+                </Link>
               </li>
             </ul>
           </div>
@@ -172,9 +170,9 @@ const Footer = () => {
                   <>
                     <p>Welcome to the <span className="font-black text-slate-900 italic">ORGOSAGA</span> community. By choosing nature, you agree to these terms:</p>
                     <div className="space-y-4">
-                      <h3 className="font-black text-slate-900 uppercase text-xs tracking-widest italic underline decoration-green-600">1. Freshness Guarantee</h3>
+                      <h3 className="font-black text-slate-900 uppercase text-xs tracking-widest italic underline decoration-green-600">Freshness Guarantee</h3>
                       <p>All orders are processed based on farm availability. Freshness is our priority, so delivery timelines may vary slightly with harvest cycles.</p>
-                      <h3 className="font-black text-slate-900 uppercase text-xs tracking-widest italic underline decoration-green-600">2. Direct Verification</h3>
+                      <h3 className="font-black text-slate-900 uppercase text-xs tracking-widest italic underline decoration-green-600">Direct Verification</h3>
                       <p>To maintain transparency, orders are confirmed via direct WhatsApp coordination before dispatch.</p>
                     </div>
                   </>
