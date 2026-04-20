@@ -1,206 +1,40 @@
-import React, { useState, useEffect } from "react";
-import { TrendingUp, ShoppingBasket, Leaf, Users, ArrowRight, Clock, User, Phone } from "lucide-react";
-import StatCard from "../components/StatCard";
-import { db } from "../../firebase";
-import { collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { Truck, MessageSquare, Users, TrendingUp } from 'lucide-react';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const [activeView, setActiveView] = useState("orders"); // orders, revenue, inventory, customers
-  const [stats, setStats] = useState({
-    revenue: 0,
-    activeOrders: 0,
-    totalProducts: 0,
-    featuredProducts: 0,
-    totalCustomers: 0
-  });
-  
-  const [dataList, setDataList] = useState({
-    orders: [],
-    revenue: [],
-    inventory: [],
-    customers: []
-  });
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // 1. 📈 Orders & Revenue Logic (Orgosaga Sync)
-    const unsubOrders = onSnapshot(collection(db, "orders"), (snapshot) => {
-      let totalRev = 0;
-      let activeCount = 0;
-      const orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-      orders.forEach(order => {
-        if (order.paymentStatus === "paid") totalRev += Number(order.totalAmount || 0);
-        if (order.status !== "completed" && order.status !== "cancelled") activeCount++;
-      });
-
-      setStats(prev => ({ ...prev, revenue: totalRev, activeOrders: activeCount }));
-      setDataList(prev => ({ 
-        ...prev, 
-        orders: orders.slice(0, 5),
-        revenue: orders.filter(o => o.paymentStatus === "paid").slice(0, 5) 
-      }));
-    });
-
-    // 2. 📦 Inventory Logic (Harvest Sync)
-    const unsubProducts = onSnapshot(collection(db, "products"), (snapshot) => {
-      const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      const featured = products.filter(p => p.section === 'featured').length;
-      setStats(prev => ({ 
-        ...prev, 
-        totalProducts: products.length,
-        featuredProducts: featured
-      }));
-      setDataList(prev => ({ ...prev, inventory: products.slice(0, 5) }));
-    });
-
-    // 3. 👥 Customers Logic (Member Sync)
-    const unsubUsers = onSnapshot(collection(db, "users"), (snapshot) => {
-      const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setStats(prev => ({ ...prev, totalCustomers: users.length }));
-      setDataList(prev => ({ ...prev, customers: users.slice(0, 5) }));
-      setLoading(false);
-    });
-
-    return () => { unsubOrders(); unsubProducts(); unsubUsers(); };
-  }, []);
-
-  const formatCurrency = (num) => {
-    if (num >= 100000) return `₹${(num / 100000).toFixed(2)}L`;
-    if (num >= 1000) return `₹${(num / 1000).toFixed(1)}K`;
-    return `₹${num}`;
-  };
-
-  // 🚀 REDIRECTION LOGIC (Based on current active tab)
-  const handleViewAll = () => {
-    switch (activeView) {
-      case "orders": navigate("/admin/orders"); break;
-      case "inventory": navigate("/admin/all-products"); break;
-      case "revenue": navigate("/admin/revanue"); break;
-      case "customers": navigate("/admin/customer"); break;
-      default: navigate("/admin");
-    }
-  };
+  const stats = [
+    { label: 'Active Fleet', value: '18', icon: <Truck className="text-blue-500"/> },
+    { label: 'New Enquiries', value: '05', icon: <MessageSquare className="text-yellow-500"/> },
+    { label: 'Total Clients', value: '42', icon: <Users className="text-green-500"/> },
+    { label: 'Monthly Traffic', value: '1.2k', icon: <TrendingUp className="text-purple-500"/> },
+  ];
 
   return (
-    <div className="space-y-8 pb-10 px-4 md:px-0 font-sans">
-      {/* Welcome Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-        <div>
-          <h1 className="text-4xl font-black uppercase tracking-tighter text-slate-900 italic leading-none">
-            Harvest <span className="text-green-600">Pulse</span>
-          </h1>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2 flex items-center gap-2">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
-            Real-time Systems Online
-          </p>
-        </div>
+    <div className="space-y-10">
+      <div>
+        <h1 className="text-3xl font-bold">Industrial Overview</h1>
+        <p className="text-zinc-500 text-sm mt-1">Real-time status of Raj Construction & Mining.</p>
       </div>
 
-      {/* Stats Grid - Clickable Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        <div onClick={() => setActiveView("revenue")} className="cursor-pointer transform transition-transform active:scale-95">
-          <StatCard label="Total Revenue" val={formatCurrency(stats.revenue)} sub="Paid Collections" icon={<TrendingUp size={20}/>} color={activeView === "revenue" ? "bg-green-600 shadow-xl shadow-green-600/20" : "bg-emerald-600"} />
-        </div>
-        <div onClick={() => setActiveView("orders")} className="cursor-pointer transform transition-transform active:scale-95">
-          <StatCard label="Active Orders" val={stats.activeOrders.toString().padStart(2, '0')} sub="Live Operations" icon={<ShoppingBasket size={20}/>} color={activeView === "orders" ? "bg-green-600 shadow-xl shadow-green-600/20" : "bg-green-600"} />
-        </div>
-        <div onClick={() => setActiveView("inventory")} className="cursor-pointer transform transition-transform active:scale-95">
-          <StatCard label="Inventory" val={stats.totalProducts} sub="Active Harvest" icon={<Leaf size={20}/>} color={activeView === "inventory" ? "bg-green-600 shadow-xl shadow-green-600/20" : "bg-slate-900"} />
-        </div>
-        <div onClick={() => setActiveView("customers")} className="cursor-pointer transform transition-transform active:scale-95">
-          <StatCard label="Members" val={stats.totalCustomers} sub="Healthy Community" icon={<Users size={20}/>} color={activeView === "customers" ? "bg-green-600 shadow-xl shadow-green-600/20" : "bg-teal-600"} />
-        </div>
-      </div>
-
-      {/* Dynamic Data Table Area */}
-      <div className="bg-white rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 border border-slate-100 shadow-2xl shadow-slate-200/50 overflow-hidden">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-          <div>
-            <h3 className="text-xl font-black uppercase tracking-tighter italic text-slate-900 leading-none">
-              {activeView === "orders" && "Latest Dispatches"}
-              {activeView === "revenue" && "Recent Payments"}
-              {activeView === "inventory" && "Warehouse Stock"}
-              {activeView === "customers" && "New Signups"}
-            </h3>
-            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2">Activity Stream • Last 5 entries</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, i) => (
+          <div key={i} className="bg-[#111] border border-zinc-800 p-6 rounded-2xl flex items-center gap-5 shadow-sm">
+            <div className="p-4 bg-zinc-900 rounded-xl">
+              {stat.icon}
+            </div>
+            <div>
+              <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider">{stat.label}</p>
+              <p className="text-2xl font-bold">{stat.value}</p>
+            </div>
           </div>
-          
-          <button 
-            onClick={handleViewAll}
-            className="flex items-center gap-2 text-[10px] font-black uppercase text-slate-400 hover:text-green-600 transition-all border border-slate-100 px-5 py-3 rounded-full bg-slate-50 md:bg-transparent w-full md:w-auto justify-center group"
-          >
-            View Full System <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
+        ))}
+      </div>
 
-        <div className="overflow-x-auto -mx-6 px-6">
-          <table className="w-full text-left min-w-[600px]">
-            <thead>
-              <tr className="border-b border-slate-50">
-                <th className="pb-5 text-[10px] font-black uppercase text-slate-400 tracking-widest">Primary Details</th>
-                <th className="pb-5 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">Context</th>
-                <th className="pb-5 text-[10px] font-black uppercase text-slate-400 tracking-widest text-right">Value/ID</th>
-              </tr>
-            </thead>
-            <tbody className="text-[12px] font-bold divide-y divide-slate-50">
-              {dataList[activeView].map((item, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/50 transition-all group cursor-pointer" onClick={handleViewAll}>
-                  <td className="py-6">
-                    <div className="flex items-center gap-4">
-                      {activeView === 'inventory' && <img src={item.imageUrl} className="w-10 h-10 rounded-xl object-cover border border-slate-100" />}
-                      <div className="flex flex-col">
-                        <span className="font-black uppercase tracking-tighter text-slate-900 text-sm italic">
-                          {activeView === 'customers' ? item.name : (item.name || `#ORGO-${item.id.slice(-6).toUpperCase()}`)}
-                        </span>
-                        <span className="text-[10px] text-slate-400 font-bold uppercase mt-1">
-                          {activeView === 'customers' ? item.email : (item.customerName || item.category)}
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td className="py-6 text-center">
-                    {activeView === 'orders' && (
-                      <span className={`px-4 py-1.5 rounded-full text-[9px] uppercase font-black tracking-tighter border ${item.status === 'completed' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-orange-50 text-orange-600 border-orange-100'}`}>
-                        {item.status}
-                      </span>
-                    )}
-                    {activeView === 'inventory' && (
-                      <span className="text-[10px] font-black uppercase text-slate-500 bg-slate-100 px-3 py-1 rounded-lg italic">Qty: {item.stock || 0}</span>
-                    )}
-                    {activeView === 'revenue' && (
-                      <div className="flex items-center justify-center gap-2 text-slate-400 text-[10px] uppercase font-black">
-                        <Clock size={12} className="text-green-600"/> {item.createdAt?.toDate ? item.createdAt.toDate().toLocaleDateString() : "Pending"}
-                      </div>
-                    )}
-                    {activeView === 'customers' && (
-                      <div className="flex items-center justify-center gap-2 text-slate-500 font-black italic">
-                        <Phone size={12} className="text-green-600"/> {item.phone || "N/A"}
-                      </div>
-                    )}
-                  </td>
-
-                  <td className="py-6 text-right">
-                    <div className="flex flex-col items-end">
-                      <span className="font-black italic tracking-tighter text-slate-950 text-base">
-                        {activeView === 'inventory' ? `₹${item.price}` : (item.totalAmount ? `₹${item.totalAmount}` : <User className="text-slate-200" />)}
-                      </span>
-                      {item.paymentStatus === 'paid' && (
-                        <span className="text-[8px] font-black uppercase mt-1 text-green-500 italic">● Verified Inflow</span>
-                      )}
-                      {activeView === 'customers' && (
-                        <span className="text-[8px] font-black uppercase mt-1 text-slate-400 italic">Verified Account</span>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Placeholder for Recent Enquiries Table */}
+      <div className="bg-[#111] border border-zinc-800 rounded-2xl p-6">
+        <h2 className="text-lg font-bold mb-4">Latest Mining Enquiries</h2>
+        <div className="h-32 flex items-center justify-center border border-dashed border-zinc-800 rounded-xl text-zinc-600">
+          Enquiry data will sync from Firebase here.
         </div>
       </div>
     </div>
