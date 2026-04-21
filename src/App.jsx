@@ -2,22 +2,24 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
-// Components
+// Website Components (Check carefully: Capitalization matters)
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-import Home from "./pages/Home";
-import Fleet from "./pages/Fleet";
-import Services from "./pages/Services";
-import Contact from "./pages/Contact";
 
-// Admin
+// ✅ Paths Updated: Extension .jsx add ki hai aur Case check kiya hai
+import Home from "./pages/Home.jsx"; 
+import Fleet from "./pages/Fleet.jsx";
+import Services from "./pages/Services.jsx";
+import Contact from "./pages/Contact.jsx";
+
+// Admin Components
 import AdminLayout from "./admin/AdminLayout";
 import Dashboard from "./admin/pages/Dashboard";
 import AdminLogin from "./admin/pages/Login";
 import ManageFleet from "./admin/pages/ManageFleet";
 import Enquiries from "./admin/pages/Enquiries";
 
-// 🔐 STRICT PROTECTED ROUTE (Role Based)
+// 🔐 STRICT PROTECTED ROUTE
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   
@@ -27,7 +29,6 @@ const ProtectedRoute = ({ children }) => {
     </div>
   );
   
-  // 🛡️ User logged in hona chahiye aur uska role "admin" hona chahiye
   if (!user || user.role !== "admin") {
     return <Navigate to="/admin/login" replace />;
   }
@@ -40,7 +41,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public */}
+          {/* Public Website Routes */}
           <Route path="/*" element={
             <div className="flex flex-col min-h-screen bg-[#0a0a0a] text-white">
               <Navbar />
