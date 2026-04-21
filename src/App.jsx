@@ -7,10 +7,10 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 
 // ✅ Paths Updated: Extension .jsx add ki hai aur Case check kiya hai
-import Home from "./pages/Home.jsx"; 
-import Fleet from "./pages/Fleet.jsx";
-import Services from "./pages/Services.jsx";
-import Contact from "./pages/Contact.jsx";
+import Home from "./pages/Home";
+import Fleet from "./pages/Fleet";
+import Services from "./pages/Services";
+import Contact from "./pages/Contact";
 
 // Admin Components
 import AdminLayout from "./admin/AdminLayout";
