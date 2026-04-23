@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Phone, ArrowUpRight, Shield, Zap, Globe, LayoutGrid } from "lucide-react";
+import { Phone, Zap, Shield, Globe, LayoutGrid, Instagram, Facebook } from "lucide-react";
 
 const Footer = () => {
   const navLinks = [
@@ -8,6 +8,20 @@ const Footer = () => {
     { title: "Fleet", path: "/fleet" },
     { title: "Services", path: "/services" },
     { title: "Contact", path: "/contact" },
+  ];
+
+  // ✅ Updated Social Links
+  const socials = [
+    { 
+      name: "Instagram", 
+      icon: <Instagram size={18} />, 
+      link: "https://www.instagram.com/rajenterprisesconstruction?utm_source=qr&igsh=MWZuanp2c28yOTJ5ag%3D%3D" 
+    },
+    { 
+      name: "Facebook", 
+      icon: <Facebook size={18} />, 
+      link: "https://www.facebook.com/profile.php?id=61586290622589" 
+    },
   ];
 
   return (
@@ -21,8 +35,8 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-x-12 mb-12">
           
-          {/* 1. BRAND IDENTITY (Industrial & Bold) */}
-          <div className="md:col-span-5 space-y-6">
+          {/* 1. BRAND IDENTITY & SOCIALS */}
+          <div className="md:col-span-5 space-y-6 text-left">
             <Link to="/" className="inline-block group">
               <h2 className="text-black text-2xl font-[1000] italic tracking-tighter uppercase leading-none">
                 RAJ <span className="text-[#FBBF24] group-hover:text-black transition-colors">CONSTRUCTION</span>
@@ -34,7 +48,23 @@ const Footer = () => {
               Premium infrastructure solutions specializing in mining and heavy logistics across the <span className="text-black underline decoration-[#FBBF24] decoration-2 underline-offset-4">Belt of North India</span>.
             </p>
 
-            <div className="flex items-center gap-4">
+            {/* 🌐 SOCIAL MEDIA LINKS (NEW) */}
+            <div className="flex items-center gap-3 pt-2">
+              {socials.map((social, idx) => (
+                <a 
+                  key={idx} 
+                  href={social.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-zinc-900 text-white rounded-xl flex items-center justify-center hover:bg-[#FBBF24] hover:text-black hover:scale-110 transition-all duration-500 shadow-lg"
+                  aria-label={social.name}
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-4 pt-2">
                <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-50 border border-zinc-100 rounded-lg">
                   <Shield size={12} className="text-[#FBBF24]" />
                   <span className="text-[8px] font-[1000] uppercase text-zinc-600 tracking-widest">ISO 9001</span>
@@ -46,8 +76,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* 2. MINIMALIST NAVIGATION (Organized Grid) */}
-          <div className="md:col-span-3">
+          {/* 2. MINIMALIST NAVIGATION */}
+          <div className="md:col-span-3 text-left">
             <h3 className="text-black font-[1000] mb-6 text-[10px] uppercase tracking-[0.4em] flex items-center gap-2">
               <span className="w-4 h-[2px] bg-[#FBBF24]"></span> Quick Access
             </h3>
@@ -66,25 +96,24 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 3. CONTACT CARD (Compact & High Contrast) */}
+          {/* 3. CONTACT CARD (With Updated Primary Number) */}
           <div className="md:col-span-4">
             <div className="bg-black p-5 rounded-[2rem] border border-black relative group overflow-hidden shadow-2xl">
                <div className="relative z-10 flex items-center justify-between">
-                  <div className="space-y-1">
+                  <div className="space-y-1 text-left">
                      <p className="text-[8px] font-black text-[#FBBF24] uppercase tracking-[0.3em]">Direct Support</p>
-                     <p className="text-xl font-[1000] text-white tracking-tighter italic">+91 83050 31020</p>
+                     <p className="text-xl font-[1000] text-white tracking-tighter italic">+91 83820 99713</p>
                   </div>
-                  <a href="tel:8305031020" className="w-12 h-12 bg-[#FBBF24] text-black rounded-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(251,191,36,0.3)]">
-                     <Phone size={20} />
+                  <a href="tel:8382099713" className="w-12 h-12 bg-[#FBBF24] text-black rounded-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                      <Phone size={20} />
                   </a>
                </div>
-               {/* Background Glow */}
                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#FBBF24] opacity-10 blur-3xl group-hover:opacity-20 transition-opacity"></div>
             </div>
           </div>
         </div>
 
-        {/* 🚀 SIGNATURE BAR: CodeWebX Branding (High Visibility) */}
+        {/* 🚀 SIGNATURE BAR: CodeWebX Branding */}
         <div className="mt-8 pt-8 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
              <p className="text-zinc-400 text-[9px] font-black uppercase tracking-[0.4em]">
@@ -92,16 +121,10 @@ const Footer = () => {
              </p>
           </div>
 
-          {/* CODEWEBX BRANDING: Bold & Modern */}
           <div className="group flex items-center gap-4 bg-black px-6 py-3 rounded-2xl border border-zinc-900 shadow-xl transition-all hover:border-[#FBBF24]/50">
              <div className="flex flex-col items-end">
                 <span className="text-zinc-500 text-[7px] font-black uppercase tracking-[0.4em] leading-none mb-1">Developed By</span>
-                <a 
-                   href="https://codewebx.in" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   className="flex items-center gap-1.5"
-                >
+                <a href="https://codewebx.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                    <span className="text-white font-[1000] text-xs tracking-tighter group-hover:text-[#FBBF24] transition-colors">CODEWEBX</span>
                    <span className="text-[#FBBF24] font-black text-xs">.IN</span>
                 </a>

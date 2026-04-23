@@ -1,12 +1,13 @@
 import React from 'react';
-import { Mountain, Route, Zap, Hammer, ArrowRight } from 'lucide-react';
+import { Mountain, Route, Zap, Hammer, ArrowRight, Pickaxe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Images Import
 import s1 from '../../assets/s1.webp'; // Mining
 import s2 from '../../assets/s2.webp'; // Highway
-import s4 from '../../assets/s4.webp'; // Electrical
-import s5 from '../../assets/s5.webp'; // Civil
+import s3 from '../../assets/s3.webp'; // Mitti Khudai (Earthwork)
+import s4 from '../../assets/s4.webp'; // Civil
+import s5 from '../../assets/s5.webp'; // Electrical
 
 const ServicesOverview = () => {
   const services = [
@@ -17,6 +18,14 @@ const ServicesOverview = () => {
       tag: "Grade-A Contractor",
       accent: "hover:border-orange-500/50",
       glow: "group-hover:bg-orange-500/10"
+    },
+    { 
+      title: "Earthwork & Digging", 
+      icon: <Pickaxe size={24}/>, 
+      img: s3, // Nayi service Mitti Khudai ke liye
+      tag: "Heavy Earthmovers",
+      accent: "hover:border-amber-600/50",
+      glow: "group-hover:bg-amber-600/10"
     },
     { 
       title: "Highway & Roads", 
@@ -46,7 +55,7 @@ const ServicesOverview = () => {
 
   return (
     <section className="bg-white py-20 md:py-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-[1400px] mx-auto px-6">
         
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20 text-left">
@@ -61,12 +70,12 @@ const ServicesOverview = () => {
           </Link>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Services Grid - Now 5 Columns on Large Screens */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {services.map((s, i) => (
             <div 
               key={i} 
-              className={`group relative h-[450px] rounded-[2.5rem] overflow-hidden border border-zinc-200 transition-all duration-700 hover:-translate-y-4 ${s.accent} shadow-xl hover:shadow-2xl`}
+              className={`group relative h-[480px] rounded-[2.5rem] overflow-hidden border border-zinc-200 transition-all duration-700 hover:-translate-y-4 ${s.accent} shadow-xl hover:shadow-2xl`}
             >
               {/* 🖼️ BACKGROUND IMAGE */}
               <img 
@@ -80,7 +89,7 @@ const ServicesOverview = () => {
               <div className={`absolute inset-0 opacity-0 transition-opacity duration-700 ${s.glow}`}></div>
 
               {/* 📄 CONTENT LAYER */}
-              <div className="relative h-full p-8 flex flex-col justify-between z-10 text-left">
+              <div className="relative h-full p-6 flex flex-col justify-between z-10 text-left">
                 {/* Top Part */}
                 <div>
                   <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md text-white text-[8px] font-black uppercase tracking-widest rounded-lg border border-white/10 mb-4">
@@ -93,7 +102,7 @@ const ServicesOverview = () => {
                   <div className="w-12 h-12 bg-[#FBBF24] rounded-xl flex items-center justify-center text-black mb-4 shadow-lg">
                     {s.icon}
                   </div>
-                  <h3 className="text-2xl font-[1000] italic uppercase tracking-tighter text-white mb-2 leading-none">
+                  <h3 className="text-xl font-[1000] italic uppercase tracking-tighter text-white mb-2 leading-tight">
                     {s.title}
                   </h3>
                   <div className="h-1 w-0 bg-[#FBBF24] rounded-full transition-all duration-500 group-hover:w-full mb-4"></div>
