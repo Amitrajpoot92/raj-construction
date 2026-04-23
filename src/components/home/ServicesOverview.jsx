@@ -22,7 +22,7 @@ const ServicesOverview = () => {
     { 
       title: "Earthwork & Digging", 
       icon: <Pickaxe size={24}/>, 
-      img: s3, // Nayi service Mitti Khudai ke liye
+      img: s3,
       tag: "Heavy Earthmovers",
       accent: "hover:border-amber-600/50",
       glow: "group-hover:bg-amber-600/10"
@@ -70,12 +70,13 @@ const ServicesOverview = () => {
           </Link>
         </div>
 
-        {/* Services Grid - Now 5 Columns on Large Screens */}
+        {/* Services Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {services.map((s, i) => (
-            <div 
+            <Link 
+              to="/contact" 
               key={i} 
-              className={`group relative h-[480px] rounded-[2.5rem] overflow-hidden border border-zinc-200 transition-all duration-700 hover:-translate-y-4 ${s.accent} shadow-xl hover:shadow-2xl`}
+              className={`group relative h-[480px] rounded-[2.5rem] overflow-hidden border border-zinc-200 transition-all duration-700 hover:-translate-y-4 ${s.accent} shadow-xl hover:shadow-2xl block`}
             >
               {/* 🖼️ BACKGROUND IMAGE */}
               <img 
@@ -108,12 +109,12 @@ const ServicesOverview = () => {
                   <div className="h-1 w-0 bg-[#FBBF24] rounded-full transition-all duration-500 group-hover:w-full mb-4"></div>
                   
                   <div className="flex items-center gap-2 text-[10px] font-black text-[#FBBF24] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <span>Details</span>
+                    <span>Inquire Now</span>
                     <ArrowRight size={14} />
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

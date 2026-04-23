@@ -1,7 +1,7 @@
 import React from 'react';
-import { Phone, ShieldCheck, HardHat, Briefcase, UserCheck, MessageSquare } from 'lucide-react';
+import { Phone, ShieldCheck, HardHat, Briefcase, UserCheck } from 'lucide-react';
 
-// Images Import (Make sure these exist in assets)
+// Images Import
 import directorImg from '../../assets/director.webp';
 import managerImg from '../../assets/manager.webp';
 import engineerImg from '../../assets/sideengineer.webp';
@@ -18,16 +18,39 @@ const TeamContact = () => {
   return (
     <section className="py-24 bg-white">
       <div className="max-w-[1400px] mx-auto px-6 text-left">
-        <h2 className="text-6xl font-[1000] italic uppercase tracking-tighter mb-12">Leadership <span className="text-zinc-300">Team</span></h2>
+        <h2 className="text-6xl font-[1000] italic uppercase tracking-tighter mb-12">
+          Leadership <span className="text-zinc-300">Team</span>
+        </h2>
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {team.map((member, i) => (
-            <div key={i} className="group relative h-[500px] rounded-[3rem] overflow-hidden border border-zinc-100 shadow-2xl">
-              <img src={member.img} alt={member.name} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+            <div key={i} className="group relative h-[550px] rounded-[3rem] overflow-hidden border border-zinc-100 shadow-2xl bg-zinc-50">
+              
+              {/* 🖼️ IMAGE: object-top used to prevent head cutting */}
+              <img 
+                src={member.img} 
+                alt={member.name} 
+                className="absolute inset-0 w-full h-full object-cover object-top transition-all duration-700" 
+              />
+              
+              {/* 🌑 LIGHT GRADIENT: Sirf niche text readability ke liye, uper se clear hai */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+
+              {/* 📄 CONTENT */}
               <div className="relative h-full p-8 flex flex-col justify-end text-white">
-                <p className="text-[10px] font-black uppercase tracking-widest text-[#FBBF24] mb-2">{member.role}</p>
-                <h3 className="text-3xl font-[1000] italic uppercase mb-6">{member.name}</h3>
-                <a href={`tel:${member.phone}`} className="bg-[#FBBF24] text-black py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-widest text-center flex items-center justify-center gap-2">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[#FBBF24]">{member.icon}</span>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#FBBF24]">{member.role}</p>
+                </div>
+                
+                <h3 className="text-3xl font-[1000] italic uppercase mb-6 drop-shadow-md">
+                  {member.name}
+                </h3>
+                
+                <a 
+                  href={`tel:${member.phone}`} 
+                  className="bg-[#FBBF24] text-black py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-widest text-center flex items-center justify-center gap-2 hover:bg-black hover:text-[#FBBF24] transition-all duration-300 shadow-xl"
+                >
                   <Phone size={16} /> {member.phone}
                 </a>
               </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Phone, Zap, Shield, Globe, LayoutGrid, Instagram, Facebook } from "lucide-react";
+import { Phone, Zap, Shield, Globe, LayoutGrid, Instagram, Facebook, MapPin, MessageSquare } from "lucide-react";
 
 const Footer = () => {
   const navLinks = [
@@ -10,8 +10,13 @@ const Footer = () => {
     { title: "Contact", path: "/contact" },
   ];
 
-  // ✅ Updated Social Links
+  // ✅ All Social Links Balanced (WP Added)
   const socials = [
+    { 
+      name: "WhatsApp Business", 
+      icon: <MessageSquare size={18} />, 
+      link: "https://wa.me/918382099713" 
+    },
     { 
       name: "Instagram", 
       icon: <Instagram size={18} />, 
@@ -25,30 +30,41 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-white border-t border-zinc-100 pt-12 pb-6 relative overflow-hidden">
-      {/* 🎨 ARCHITECTURAL GRAPHICS */}
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-50 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
-      <div className="absolute bottom-0 left-4 opacity-[0.05] pointer-events-none hidden md:block">
-        <LayoutGrid size={200} strokeWidth={1} />
-      </div>
+    <footer className="bg-white border-t border-zinc-100 pt-16 md:pt-20 pb-8 relative overflow-hidden">
+      {/* 🎨 ARCHITECTURAL BACKGROUND ELEMENTS */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#FBBF24] to-transparent"></div>
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-zinc-50 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-x-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-16 mb-16">
           
-          {/* 1. BRAND IDENTITY & SOCIALS */}
-          <div className="md:col-span-5 space-y-6 text-left">
-            <Link to="/" className="inline-block group">
-              <h2 className="text-black text-2xl font-[1000] italic tracking-tighter uppercase leading-none">
-                RAJ <span className="text-[#FBBF24] group-hover:text-black transition-colors">CONSTRUCTION</span>
-              </h2>
-              <div className="h-1 w-0 group-hover:w-full bg-[#FBBF24] transition-all duration-500 mt-1"></div>
-            </Link>
+          {/* 1. BRAND & VISION */}
+          <div className="md:col-span-5 space-y-8 text-left">
+            <div>
+              <Link to="/" className="inline-block group">
+                <h2 className="text-black text-3xl font-[1000] italic tracking-tighter uppercase leading-none">
+                  RAJ <span className="text-[#FBBF24] group-hover:text-black transition-colors">CONSTRUCTION</span>
+                </h2>
+                <p className="text-[10px] font-black tracking-[0.5em] text-zinc-300 mt-2">ESTABLISHED 2013</p>
+              </Link>
+            </div>
             
-            <p className="text-zinc-500 text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] leading-relaxed max-w-sm">
-              Premium infrastructure solutions specializing in mining and heavy logistics across the <span className="text-black underline decoration-[#FBBF24] decoration-2 underline-offset-4">Belt of North India</span>.
+            <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest leading-relaxed max-w-sm">
+              A powerhouse in North India's infrastructure, delivering <span className="text-black underline decoration-[#FBBF24] decoration-2 underline-offset-4">Grade-A mining</span> and heavy logistics solutions from the heart of Uttar Pradesh.
             </p>
 
-            {/* 🌐 SOCIAL MEDIA LINKS (NEW) */}
+            {/* LOCATION HIGHLIGHT */}
+            <div className="flex items-center gap-3 text-black">
+              <div className="w-10 h-10 bg-zinc-50 rounded-xl flex items-center justify-center border border-zinc-100 shadow-sm">
+                <MapPin size={18} className="text-[#FBBF24]" />
+              </div>
+              <div className="text-left">
+                <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400 leading-none mb-1">Regional HQ</p>
+                <p className="text-xs font-[1000] uppercase italic">Lucknow, Uttar Pradesh</p>
+              </div>
+            </div>
+
+            {/* 🌐 BALANCED SOCIALS (All Icons Equal) */}
             <div className="flex items-center gap-3 pt-2">
               {socials.map((social, idx) => (
                 <a 
@@ -56,39 +72,28 @@ const Footer = () => {
                   href={social.link} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-zinc-900 text-white rounded-xl flex items-center justify-center hover:bg-[#FBBF24] hover:text-black hover:scale-110 transition-all duration-500 shadow-lg"
+                  className="w-11 h-11 bg-black text-white rounded-2xl flex items-center justify-center hover:bg-[#FBBF24] hover:text-black hover:-translate-y-1 transition-all duration-500 shadow-lg"
                   aria-label={social.name}
                 >
                   {social.icon}
                 </a>
               ))}
             </div>
-
-            <div className="flex items-center gap-4 pt-2">
-               <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-50 border border-zinc-100 rounded-lg">
-                  <Shield size={12} className="text-[#FBBF24]" />
-                  <span className="text-[8px] font-[1000] uppercase text-zinc-600 tracking-widest">ISO 9001</span>
-               </div>
-               <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-50 border border-zinc-100 rounded-lg">
-                  <Globe size={12} className="text-[#FBBF24]" />
-                  <span className="text-[8px] font-[1000] uppercase text-zinc-600 tracking-widest">Region Focus: UP/BIHAR</span>
-               </div>
-            </div>
           </div>
 
-          {/* 2. MINIMALIST NAVIGATION */}
+          {/* 2. NAVIGATION */}
           <div className="md:col-span-3 text-left">
-            <h3 className="text-black font-[1000] mb-6 text-[10px] uppercase tracking-[0.4em] flex items-center gap-2">
-              <span className="w-4 h-[2px] bg-[#FBBF24]"></span> Quick Access
+            <h3 className="text-black font-[1000] mb-8 text-[10px] uppercase tracking-[0.4em] flex items-center gap-2">
+              <span className="w-6 h-[2px] bg-[#FBBF24]"></span> Directory
             </h3>
-            <ul className="grid grid-cols-2 md:grid-cols-1 gap-y-3">
+            <ul className="space-y-4">
               {navLinks.map((link) => (
                 <li key={link.title}>
                   <Link 
                     to={link.path} 
-                    className="text-zinc-400 hover:text-black text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all inline-flex items-center gap-2 group"
+                    className="text-zinc-400 hover:text-black text-[11px] font-black uppercase tracking-widest transition-all inline-flex items-center gap-3 group"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-100 group-hover:bg-[#FBBF24] transition-colors"></span>
+                    <span className="w-2 h-2 rounded-sm border border-zinc-200 group-hover:bg-[#FBBF24] group-hover:border-[#FBBF24] transition-all rotate-45"></span>
                     {link.title}
                   </Link>
                 </li>
@@ -96,15 +101,18 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 3. CONTACT CARD (With Updated Primary Number) */}
+          {/* 3. CONTACT CARD (With Primary No) */}
           <div className="md:col-span-4">
-            <div className="bg-black p-5 rounded-[2rem] border border-black relative group overflow-hidden shadow-2xl">
+             <h3 className="text-black font-[1000] mb-8 text-[10px] uppercase tracking-[0.4em] flex items-center gap-2">
+              <span className="w-6 h-[2px] bg-[#FBBF24]"></span> Instant Connect
+            </h3>
+            <div className="bg-zinc-950 p-6 rounded-[2.5rem] relative group overflow-hidden shadow-2xl">
                <div className="relative z-10 flex items-center justify-between">
-                  <div className="space-y-1 text-left">
-                     <p className="text-[8px] font-black text-[#FBBF24] uppercase tracking-[0.3em]">Direct Support</p>
+                  <div className="text-left">
+                     <p className="text-[8px] font-black text-[#FBBF24] uppercase tracking-[0.3em] mb-1">On-Call Support</p>
                      <p className="text-xl font-[1000] text-white tracking-tighter italic">+91 83820 99713</p>
                   </div>
-                  <a href="tel:8382099713" className="w-12 h-12 bg-[#FBBF24] text-black rounded-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                  <a href="tel:8382099713" className="w-12 h-12 bg-[#FBBF24] text-black rounded-2xl flex items-center justify-center hover:scale-110 transition-all shadow-xl">
                       <Phone size={20} />
                   </a>
                </div>
@@ -113,30 +121,35 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* 🚀 SIGNATURE BAR: CodeWebX Branding */}
-        <div className="mt-8 pt-8 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-6">
+        {/* 🚀 SIGNATURE FOOTER BAR */}
+        <div className="pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="text-center md:text-left">
              <p className="text-zinc-400 text-[9px] font-black uppercase tracking-[0.4em]">
-               &copy; {new Date().getFullYear()} Raj Construction <span className="text-zinc-200">|</span> All Rights Reserved
+               &copy; {new Date().getFullYear()} Raj Construction Company <span className="text-zinc-200 ml-2">|</span> <span className="text-black">Privacy Policy</span>
              </p>
           </div>
 
-          <div className="group flex items-center gap-4 bg-black px-6 py-3 rounded-2xl border border-zinc-900 shadow-xl transition-all hover:border-[#FBBF24]/50">
+          {/* DEVELOPER BRANDING */}
+          <div className="group flex items-center gap-5 bg-zinc-50 px-8 py-4 rounded-[2rem] border border-zinc-100 transition-all hover:bg-black hover:border-black">
              <div className="flex flex-col items-end">
-                <span className="text-zinc-500 text-[7px] font-black uppercase tracking-[0.4em] leading-none mb-1">Developed By</span>
-                <a href="https://codewebx.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
-                   <span className="text-white font-[1000] text-xs tracking-tighter group-hover:text-[#FBBF24] transition-colors">CODEWEBX</span>
-                   <span className="text-[#FBBF24] font-black text-xs">.IN</span>
+                <span className="text-zinc-400 text-[7px] font-black uppercase tracking-[0.5em] leading-none mb-1">Digital Partner</span>
+                <a href="https://codewebx.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                   <span className="text-black font-[1000] text-sm tracking-tighter group-hover:text-white transition-colors">CODEWEBX</span>
+                   <span className="text-[#FBBF24] font-black text-sm">.IN</span>
                 </a>
              </div>
-             <div className="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                <Zap size={16} className="text-[#FBBF24] fill-[#FBBF24]" />
+             <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center group-hover:bg-[#FBBF24] transition-all">
+                <Zap size={18} className="text-[#FBBF24] group-hover:text-black transition-colors" />
              </div>
           </div>
 
-          <div className="hidden md:block">
+          <div className="flex items-center gap-6">
+             <div className="flex items-center gap-2">
+                <Shield size={12} className="text-[#FBBF24]" />
+                <span className="text-[9px] font-black uppercase text-zinc-400 tracking-widest">ISO Certified</span>
+             </div>
              <Link to="/admin/login" className="text-zinc-300 hover:text-black text-[9px] font-black uppercase tracking-[0.4em] transition-colors">
-               Staff Portal
+               Admin Access
              </Link>
           </div>
         </div>

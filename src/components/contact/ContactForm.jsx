@@ -3,16 +3,41 @@ import { Send, User, Phone, MessageSquare, Loader2, MapPin, Clock, Hammer } from
 
 const ContactForm = () => {
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    service: '',
+    duration: '',
+    location: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // 📱 WhatsApp Redirection Logic
+    const wpNumber = "918382099713"; // Country code ke saath
     
-    // Form data handle karne ke liye yahan logic aayega
+    // Message Format taiyaar karna
+    const message = `*RAJ CONSTRUCTION - NEW INQUIRY*%0A%0A` +
+      `*Name:* ${formData.name}%0A` +
+      `*Phone:* ${formData.phone}%0A` +
+      `*Service:* ${formData.service}%0A` +
+      `*Duration:* ${formData.duration}%0A` +
+      `*Location:* ${formData.location}%0A` +
+      `*Details:* ${formData.message}`;
+
+    const whatsappURL = `https://wa.me/${wpNumber}?text=${message}`;
+
     setTimeout(() => {
-      alert("Enquiry Sent Successfully! Our team will contact you soon.");
       setLoading(false);
-    }, 1500);
+      window.open(whatsappURL, '_blank'); // Naye tab mein WhatsApp khole
+    }, 1000);
   };
 
   return (
@@ -29,20 +54,32 @@ const ContactForm = () => {
           
           {/* Row 1: Client Name & Phone */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-3">
+            <div className="space-y-3 text-left">
               <label className="flex items-center gap-2 text-[10px] font-[1000] uppercase tracking-[0.3em] text-zinc-500 ml-1">
                 <User size={12} className="text-[#FBBF24]" /> Client Name
               </label>
-              <input required type="text" placeholder="e.g. Amit Singh" 
+              <input 
+                required 
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                type="text" 
+                placeholder="e.g. Amit Singh" 
                 className="w-full bg-zinc-900/50 border border-zinc-800 p-5 rounded-2xl outline-none focus:border-[#FBBF24] focus:ring-4 focus:ring-[#FBBF24]/5 text-white transition-all placeholder:text-zinc-700 font-medium" 
               />
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 text-left">
               <label className="flex items-center gap-2 text-[10px] font-[1000] uppercase tracking-[0.3em] text-zinc-500 ml-1">
                 <Phone size={12} className="text-[#FBBF24]" /> Contact Number
               </label>
-              <input required type="tel" placeholder="+91 00000 00000" 
+              <input 
+                required 
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                type="tel" 
+                placeholder="+91 00000 00000" 
                 className="w-full bg-zinc-900/50 border border-zinc-800 p-5 rounded-2xl outline-none focus:border-[#FBBF24] focus:ring-4 focus:ring-[#FBBF24]/5 text-white transition-all placeholder:text-zinc-700 font-medium" 
               />
             </div>
@@ -50,50 +87,73 @@ const ContactForm = () => {
 
           {/* Row 2: Service Type & Duration (Timeframe) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-3">
+            <div className="space-y-3 text-left">
               <label className="flex items-center gap-2 text-[10px] font-[1000] uppercase tracking-[0.3em] text-zinc-500 ml-1">
                 <Hammer size={12} className="text-[#FBBF24]" /> Service Type
               </label>
-              <select required className="w-full bg-zinc-900/50 border border-zinc-800 p-5 rounded-2xl outline-none focus:border-[#FBBF24] focus:ring-4 focus:ring-[#FBBF24]/5 text-white transition-all appearance-none cursor-pointer font-medium">
+              <select 
+                required 
+                name="service"
+                value={formData.service}
+                onChange={handleChange}
+                className="w-full bg-zinc-900/50 border border-zinc-800 p-5 rounded-2xl outline-none focus:border-[#FBBF24] focus:ring-4 focus:ring-[#FBBF24]/5 text-white transition-all appearance-none cursor-pointer font-medium"
+              >
                 <option value="" className="bg-zinc-950">Select Service</option>
-                <option value="mining" className="bg-zinc-950">Mining & Excavation</option>
-                <option value="earthwork" className="bg-zinc-950">Earthwork (Mitti Khudai)</option>
-                <option value="highway" className="bg-zinc-950">Highway & Roads</option>
-                <option value="civil" className="bg-zinc-950">Civil Construction</option>
-                <option value="rental" className="bg-zinc-950">Heavy Fleet Rental</option>
+                <option value="Mining & Excavation" className="bg-zinc-950">Mining & Excavation</option>
+                <option value="Earthwork" className="bg-zinc-950">Earthwork (Mitti Khudai)</option>
+                <option value="Highway & Roads" className="bg-zinc-950">Highway & Roads</option>
+                <option value="Civil Construction" className="bg-zinc-950">Civil Construction</option>
+                <option value="Heavy Fleet Rental" className="bg-zinc-950">Heavy Fleet Rental</option>
               </select>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 text-left">
               <label className="flex items-center gap-2 text-[10px] font-[1000] uppercase tracking-[0.3em] text-zinc-500 ml-1">
                 <Clock size={12} className="text-[#FBBF24]" /> Work Duration
               </label>
-              <select required className="w-full bg-zinc-900/50 border border-zinc-800 p-5 rounded-2xl outline-none focus:border-[#FBBF24] focus:ring-4 focus:ring-[#FBBF24]/5 text-white transition-all appearance-none cursor-pointer font-medium">
+              <select 
+                required 
+                name="duration"
+                value={formData.duration}
+                onChange={handleChange}
+                className="w-full bg-zinc-900/50 border border-zinc-800 p-5 rounded-2xl outline-none focus:border-[#FBBF24] focus:ring-4 focus:ring-[#FBBF24]/5 text-white transition-all appearance-none cursor-pointer font-medium"
+              >
                 <option value="" className="bg-zinc-950">Select Timeframe</option>
-                <option value="half-day" className="bg-zinc-950">Half Day (4-5 Hours)</option>
-                <option value="full-day" className="bg-zinc-950">Full Day (8-10 Hours)</option>
-                <option value="2-days" className="bg-zinc-950">2 - 5 Days</option>
-                <option value="long-term" className="bg-zinc-950">Long Term Project (Monthly)</option>
+                <option value="Half Day (4-5 Hours)" className="bg-zinc-950">Half Day (4-5 Hours)</option>
+                <option value="Full Day (8-10 Hours)" className="bg-zinc-950">Full Day (8-10 Hours)</option>
+                <option value="2-5 Days" className="bg-zinc-950">2 - 5 Days</option>
+                <option value="Long Term Project" className="bg-zinc-950">Long Term Project (Monthly)</option>
               </select>
             </div>
           </div>
 
           {/* Row 3: Manual Location */}
-          <div className="space-y-3">
+          <div className="space-y-3 text-left">
             <label className="flex items-center gap-2 text-[10px] font-[1000] uppercase tracking-[0.3em] text-zinc-500 ml-1">
               <MapPin size={12} className="text-[#FBBF24]" /> Project Location
             </label>
-            <input required type="text" placeholder="Enter Full Address / Site Location" 
+            <input 
+              required 
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              type="text" 
+              placeholder="Enter Full Address / Site Location" 
               className="w-full bg-zinc-900/50 border border-zinc-800 p-5 rounded-2xl outline-none focus:border-[#FBBF24] focus:ring-4 focus:ring-[#FBBF24]/5 text-white transition-all placeholder:text-zinc-700 font-medium" 
             />
           </div>
 
           {/* Row 4: Message */}
-          <div className="space-y-3">
+          <div className="space-y-3 text-left">
             <label className="flex items-center gap-2 text-[10px] font-[1000] uppercase tracking-[0.3em] text-zinc-500 ml-1">
               <MessageSquare size={12} className="text-[#FBBF24]" /> Project Brief
             </label>
-            <textarea rows="4" placeholder="Mention any specific machine requirements..." 
+            <textarea 
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              rows="4" 
+              placeholder="Mention any specific machine requirements..." 
               className="w-full bg-zinc-900/50 border border-zinc-800 p-5 rounded-2xl outline-none focus:border-[#FBBF24] focus:ring-4 focus:ring-[#FBBF24]/5 text-white transition-all resize-none placeholder:text-zinc-700 font-medium"
             ></textarea>
           </div>
@@ -104,7 +164,7 @@ const ContactForm = () => {
             {loading ? (
               <>
                 <Loader2 size={20} className="animate-spin" />
-                <span>Processing...</span>
+                <span>Redirecting to WhatsApp...</span>
               </>
             ) : (
               <>
